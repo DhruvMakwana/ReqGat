@@ -12,6 +12,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    phone_number: Mapped[str | None] = mapped_column(String(20), nullable=True, unique=True)
     role: Mapped[str] = mapped_column(String(20), default="consultant")  # admin | consultant | reviewer
+    user_type: Mapped[str | None] = mapped_column(String(30), nullable=True)
 
     tenant: Mapped["Tenant"] = relationship("Tenant", back_populates="users")
