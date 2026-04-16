@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.api import auth, projects, discovery, requirements, scenarios, traceability, documents, settings as settings_api
+from app.api import auth, network, projects, discovery, requirements, scenarios, traceability, documents, settings as settings_api
 
 app = FastAPI(
     title="ReqGat API",
@@ -20,6 +20,7 @@ app.add_middleware(
 
 # Register routers
 app.include_router(auth.router)
+app.include_router(network.router)
 app.include_router(settings_api.router)
 app.include_router(projects.router)
 app.include_router(discovery.router)

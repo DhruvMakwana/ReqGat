@@ -6,13 +6,18 @@ import {
   FolderOpen,
   Settings,
   LogOut,
+  Users,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { clearAuth, getUser } from "@/lib/auth";
 
-const navItems = [
+const baseNavItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+];
+
+const adminNavItems = [
+  { href: "/network", label: "Network", icon: Users },
 ];
 
 export function Sidebar() {
@@ -35,7 +40,7 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map((item) => {
+        {[...baseNavItems, ...(user?.role === "admin" ? adminNavItems : [])].map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
