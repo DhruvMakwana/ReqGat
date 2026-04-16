@@ -93,3 +93,15 @@ class UpdateUserTypeRequest(BaseModel):
         if v not in allowed:
             raise ValueError(f"user_type must be one of: {', '.join(sorted(allowed))}")
         return v
+
+
+class UpdateUserRoleRequest(BaseModel):
+    role: str
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, v: str) -> str:
+        allowed = {"admin", "consultant", "reviewer"}
+        if v not in allowed:
+            raise ValueError(f"role must be one of: {', '.join(sorted(allowed))}")
+        return v

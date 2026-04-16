@@ -43,6 +43,15 @@ export const api = {
       request<UserOut>("/auth/me/user-type", { method: "PATCH", body: JSON.stringify(body) }),
   },
 
+  // ── Network ─────────────────────────────────────────────────────────────────
+  network: {
+    listUsers: () => request<UserOut[]>("/network/users"),
+    updateRole: (userId: string, role: string) =>
+      request<UserOut>(`/network/users/${userId}/role`, { method: "PATCH", body: JSON.stringify({ role }) }),
+    deleteUser: (userId: string) =>
+      request<void>(`/network/users/${userId}`, { method: "DELETE" }),
+  },
+
   // ── Settings ────────────────────────────────────────────────────────────────
   settings: {
     get: () => request<TenantOut>("/settings/tenant"),
