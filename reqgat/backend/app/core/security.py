@@ -25,11 +25,12 @@ def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(_pre_hash(plain), hashed)
 
 
-def create_access_token(data: dict[str, Any]) -> str:
+def create_access_token(
+    data: dict[str, Any], expires_minutes: int | None = None
+) -> str:
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
-    )
+    minutes = expires_minutes or settings.ACCESS_TOKEN_EXPIRE_MINUTES
+    expire = datetime.now(timezone.utc) + timedelta(minutes=minutes)
     to_encode["exp"] = expire
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
 

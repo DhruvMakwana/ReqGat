@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "dev-secret-key-change-in-production"
     ENCRYPTION_KEY: str = "dev-encryption-key-32bytes-fernet="
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
+    REMEMBER_ME_EXPIRE_MINUTES: int = 43200  # 30 days
     STORAGE_PATH: str = "./storage/documents"
     CORS_ORIGINS: list[str] = ["http://localhost:3000"]
 

@@ -23,7 +23,8 @@ async function request<T>(
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new ApiError(res.status, body.detail || res.statusText);
+    const msg = Array.isArray(body.detail) ? body.detail[0]?.msg : body.detail;
+    throw new ApiError(res.status, msg || res.statusText);
   }
 
   if (res.status === 204) return undefined as T;
@@ -33,11 +34,13 @@ async function request<T>(
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export const api = {
   auth: {
-    register: (body: { tenant_name: string; full_name: string; email: string; password: string }) =>
+    register: (body: { tenant_name: string; full_name: string; email: string; phone_number: string; password: string; confirm_password: string }) =>
       request<AuthToken>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
-    login: (body: { email: string; password: string }) =>
+    login: (body: { email: string; password: string; remember_me: boolean }) =>
       request<AuthToken>("/auth/login", { method: "POST", body: JSON.stringify(body) }),
     me: () => request<UserOut>("/auth/me"),
+    updateUserType: (body: { user_type: string }) =>
+      request<UserOut>("/auth/me/user-type", { method: "PATCH", body: JSON.stringify(body) }),
   },
 
   // ── Settings ────────────────────────────────────────────────────────────────
@@ -147,7 +150,9 @@ export interface UserOut {
   tenant_id: string;
   email: string;
   full_name: string;
+  phone_number: string | null;
   role: string;
+  user_type: string | null;
 }
 
 export interface TenantOut {
